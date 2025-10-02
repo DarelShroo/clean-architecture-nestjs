@@ -1,5 +1,5 @@
-import { Product } from './Product';
-import { ValidationError } from '../errors/DomainError';
+import { Product } from '../../../../src/domain/entities/Product';
+import { ValidationError } from '../../../../src/domain/errors/DomainError';
 
 describe('Product Entity', () => {
   describe('create', () => {

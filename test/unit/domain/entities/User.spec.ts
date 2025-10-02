@@ -1,5 +1,5 @@
-import { User } from './User';
-import { ValidationError } from '../errors/DomainError';
+import { User } from '../../../../src/domain/entities/User';
+import { ValidationError } from '../../../../src/domain/errors/DomainError';
 
 describe('User Entity', () => {
   describe('create', () => {
