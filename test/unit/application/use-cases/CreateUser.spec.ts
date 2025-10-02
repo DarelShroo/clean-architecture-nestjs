@@ -1,8 +1,8 @@
-import { CreateUser } from './CreateUser';
-import { IUserRepository } from '../../domain/repositories/IUserRepository';
-import { User } from '../../domain/entities/User';
-import { CreateUserDTO } from '../dtos/CreateUserDTO';
-import { EntityAlreadyExistsError } from '../../domain/errors/DomainError';
+import { CreateUser } from '../../../../src/application/use-cases/CreateUser';
+import { IUserRepository } from '../../../../src/domain/repositories/IUserRepository';
+import { User } from '../../../../src/domain/entities/User';
+import { CreateUserDTO } from '../../../../src/application/dtos/CreateUserDTO';
+import { EntityAlreadyExistsError } from '../../../../src/domain/errors/DomainError';
 
 describe('CreateUser Use Case', () => {
   let createUser: CreateUser;

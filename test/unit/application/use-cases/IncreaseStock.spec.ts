@@ -1,8 +1,8 @@
-import { IncreaseStock } from './IncreaseStock';
-import { IProductRepository } from '../../domain/repositories/IProductRepository';
-import { Product } from '../../domain/entities/Product';
-import { UpdateStockDTO } from '../dtos/UpdateStockDTO';
-import { EntityNotFoundError } from '../../domain/errors/DomainError';
+import { IncreaseStock } from '../../../../src/application/use-cases/IncreaseStock';
+import { IProductRepository } from '../../../../src/domain/repositories/IProductRepository';
+import { Product } from '../../../../src/domain/entities/Product';
+import { UpdateStockDTO } from '../../../../src/application/dtos/UpdateStockDTO';
+import { EntityNotFoundError } from '../../../../src/domain/errors/DomainError';
 
 describe('IncreaseStock Use Case', () => {
   let increaseStock: IncreaseStock;

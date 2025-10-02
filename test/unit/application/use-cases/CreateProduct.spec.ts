@@ -1,7 +1,7 @@
-import { CreateProduct } from './CreateProduct';
-import { IProductRepository } from '../../domain/repositories/IProductRepository';
-import { Product } from '../../domain/entities/Product';
-import { CreateProductDTO } from '../dtos/CreateProductDTO';
+import { CreateProduct } from '../../../../src/application/use-cases/CreateProduct';
+import { IProductRepository } from '../../../../src/domain/repositories/IProductRepository';
+import { Product } from '../../../../src/domain/entities/Product';
+import { CreateProductDTO } from '../../../../src/application/dtos/CreateProductDTO';
 
 describe('CreateProduct Use Case', () => {
   let createProduct: CreateProduct;

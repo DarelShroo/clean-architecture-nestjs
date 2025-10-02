@@ -1,7 +1,7 @@
-import { GetProductById } from './GetProductById';
-import { IProductRepository } from '../../domain/repositories/IProductRepository';
-import { Product } from '../../domain/entities/Product';
-import { EntityNotFoundError } from '../../domain/errors/DomainError';
+import { GetProductById } from '../../../../src/application/use-cases/GetProductById';
+import { IProductRepository } from '../../../../src/domain/repositories/IProductRepository';
+import { Product } from '../../../../src/domain/entities/Product';
+import { EntityNotFoundError } from '../../../../src/domain/errors/DomainError';
 
 describe('GetProductById Use Case', () => {
   let getProductById: GetProductById;
