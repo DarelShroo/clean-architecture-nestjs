@@ -79,7 +79,9 @@ describe('InMemoryEventBus', () => {
 
     it('should handle handler errors gracefully', async () => {
       const errorHandler: EventHandler<ProductCreated> = {
-        handle: jest.fn().mockRejectedValue(new Error('Handler error')),
+        handle: jest.fn().mockImplementation(() => {
+          throw new Error('Handler error');
+        }),
       };
       const workingHandler: EventHandler<ProductCreated> = {
         handle: jest.fn(),
