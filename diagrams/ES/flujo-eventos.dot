@@ -1,0 +1,255 @@
+digraph FlujoEventos {
+    rankdir=TB;
+    
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#fafafa"
+        style=filled
+        pad=0.5
+        nodesep=0.8
+        ranksep=1.2
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#666666"
+    ];
+
+    // Eventos de Dominio
+    subgraph cluster_events {
+        label="📡 EVENTOS DE DOMINIO";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        fontsize=14;
+        
+        ProductoCreado [
+            label="🎉 ProductoCreado\n• idProducto\n• nombreProducto\n• precio\n• marcaTiempo"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        ProductoActualizado [
+            label="📝 ProductoActualizado\n• idProducto\n• cambios\n• marcaTiempo"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        StockCambiado [
+            label="📦 StockCambiado\n• idProducto\n• stockAnterior\n• stockNuevo\n• tipoCambio\n• marcaTiempo"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        UsuarioCreado [
+            label="👤 UsuarioCreado\n• idUsuario\n• nombreUsuario\n• email\n• marcaTiempo"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        UsuarioActivado [
+            label="✅ UsuarioActivado\n• idUsuario\n• marcaTiempo"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+    }
+
+    // Bus de Eventos
+    BusEventos [
+        label="🚌 BusEventos\n(BusEventosEnMemoria)\n\n• publicar(evento)\n• suscribir(nombreEvento, manejador)\n• manejadores: Map<string, Manejador[]>\n• procesamiento asíncrono"
+        fillcolor="#ff9800"
+        color="#f57c00"
+        fontsize=11
+        shape=doubleoctagon
+    ];
+
+    // Manejadores de Eventos
+    subgraph cluster_handlers {
+        label="📬 MANEJADORES DE EVENTOS\n(Procesamiento Asíncrono)";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        fontsize=14;
+        
+        ManejadorNotificacion [
+            label="📧 ManejadorNotificación\n• Enviar notificaciones por email\n• Notificaciones push\n• Alertas SMS\n• Llamadas webhook"
+            fillcolor="#a5d6a7"
+        ];
+        
+        ManejadorAuditoria [
+            label="📋 ManejadorAuditoría\n• Registrar todos los eventos\n• Crear pista de auditoría\n• Seguimiento de cumplimiento\n• Registros históricos"
+            fillcolor="#a5d6a7"
+        ];
+        
+        ManejadorAnalíticas [
+            label="📊 ManejadorAnalíticas\n• Actualizar estadísticas\n• Generar reportes\n• Rastrear KPIs\n• Métricas de negocio"
+            fillcolor="#a5d6a7"
+        ];
+        
+        ManejadorCache [
+            label="💾 ManejadorCache\n• Invalidar datos en caché\n• Actualizar entradas de cache\n• Refrescar índices de búsqueda\n• Limpiar cache relacionado"
+            fillcolor="#a5d6a7"
+        ];
+        
+        ManejadorIntegracion [
+            label="🔗 ManejadorIntegración\n• Sincronizar con sistemas externos\n• Integración ERP\n• APIs de terceros\n• Sincronización de datos"
+            fillcolor="#a5d6a7"
+        ];
+    }
+
+    // Casos de Uso (Publicadores de Eventos)
+    subgraph cluster_publishers {
+        label="🏢 PUBLICADORES DE EVENTOS\n(Casos de Uso)";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        fontsize=14;
+        
+        CasoUsoCrearProducto [
+            label="⚙️ CrearProducto\nCaso de Uso\npublicar(ProductoCreado)"
+            fillcolor="#90caf9"
+        ];
+        
+        CasoUsoActualizarProducto [
+            label="⚙️ ActualizarProducto\nCaso de Uso\npublicar(ProductoActualizado)"
+            fillcolor="#90caf9"
+        ];
+        
+        CasoUsoAumentarStock [
+            label="⚙️ AumentarStock\nCaso de Uso\npublicar(StockCambiado)"
+            fillcolor="#90caf9"
+        ];
+        
+        CasoUsoCrearUsuario [
+            label="⚙️ CrearUsuario\nCaso de Uso\npublicar(UsuarioCreado)"
+            fillcolor="#90caf9"
+        ];
+    }
+
+    // Sistemas Externos
+    subgraph cluster_external {
+        label="🌐 SISTEMAS EXTERNOS";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        fontsize=14;
+        
+        ServicioEmail [
+            label="📬 Servicio Email\n(SendGrid/AWS SES)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        BaseDatosAuditoria [
+            label="📊 Base Datos Auditoría\n(Almacén de Eventos)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        PlataformaAnalíticas [
+            label="📈 Plataforma Analíticas\n(Google Analytics/Mixpanel)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        SistemaCache [
+            label="💾 Sistema Cache\n(Redis/Memcached)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        SistemaERP [
+            label="🏭 Sistema ERP\n(SAP/Oracle)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+    }
+
+    // Flujo: Casos de Uso -> Eventos
+    CasoUsoCrearProducto -> ProductoCreado [label="emite" color="#2196f3"];
+    CasoUsoActualizarProducto -> ProductoActualizado [label="emite" color="#2196f3"];
+    CasoUsoAumentarStock -> StockCambiado [label="emite" color="#2196f3"];
+    CasoUsoCrearUsuario -> UsuarioCreado [label="emite" color="#2196f3"];
+
+    // Flujo: Eventos -> BusEventos
+    ProductoCreado -> BusEventos [label="publicar" color="#ff9800"];
+    ProductoActualizado -> BusEventos [label="publicar" color="#ff9800"];
+    StockCambiado -> BusEventos [label="publicar" color="#ff9800"];
+    UsuarioCreado -> BusEventos [label="publicar" color="#ff9800"];
+    UsuarioActivado -> BusEventos [label="publicar" color="#ff9800"];
+
+    // Flujo: BusEventos -> Manejadores
+    BusEventos -> ManejadorNotificacion [label="notificar asínc." color="#4caf50" style=dashed];
+    BusEventos -> ManejadorAuditoria [label="registrar asínc." color="#4caf50" style=dashed];
+    BusEventos -> ManejadorAnalíticas [label="rastrear asínc." color="#4caf50" style=dashed];
+    BusEventos -> ManejadorCache [label="invalidar asínc." color="#4caf50" style=dashed];
+    BusEventos -> ManejadorIntegracion [label="sincronizar asínc." color="#4caf50" style=dashed];
+
+    // Flujo: Manejadores -> Sistemas Externos
+    ManejadorNotificacion -> ServicioEmail [label="enviar emails" color="#9c27b0"];
+    ManejadorAuditoria -> BaseDatosAuditoria [label="almacenar eventos" color="#9c27b0"];
+    ManejadorAnalíticas -> PlataformaAnalíticas [label="rastrear métricas" color="#9c27b0"];
+    ManejadorCache -> SistemaCache [label="actualizar cache" color="#9c27b0"];
+    ManejadorIntegracion -> SistemaERP [label="sincronizar datos" color="#9c27b0"];
+
+    // Suscripciones de Eventos (registro)
+    subgraph cluster_subscriptions {
+        label="🔔 SUSCRIPCIONES DE EVENTOS\n(Registro de Manejadores)";
+        style=filled;
+        fillcolor="#fff8e1";
+        color="#ffa000";
+        fontcolor="#ffa000";
+        fontsize=12;
+        
+        Suscripciones [
+            label="📋 Suscripciones de Eventos\n\nproducto.creado:\n  → ManejadorNotificación\n  → ManejadorAuditoría\n  → ManejadorAnalíticas\n\nproducto.actualizado:\n  → ManejadorAuditoría\n  → ManejadorCache\n\nstock.cambiado:\n  → ManejadorNotificación\n  → ManejadorAnalíticas\n  → ManejadorIntegración\n\nusuario.creado:\n  → ManejadorNotificación\n  → ManejadorAuditoría"
+            fillcolor="#ffecb3"
+            shape=note
+        ];
+    }
+
+    // Patrones de Flujo de Eventos
+    subgraph cluster_patterns {
+        label="🔄 PATRONES DE EVENTOS";
+        style=filled;
+        fillcolor="#e8eaf6";
+        color="#3f51b5";
+        fontcolor="#3f51b5";
+        fontsize=12;
+        
+        Patrones [
+            label="📐 Patrones Comunes\n\n🔄 Publicar-Suscribir\n• Acoplamiento débil\n• Procesamiento asíncrono\n\n⚡ Abastecimiento de Eventos\n• Historial completo de eventos\n• Pista de auditoría\n\n🎯 Preparado para CQRS\n• Separación Comando/Consulta\n• Actualizaciones dirigidas por eventos\n\n🔗 Patrón Saga\n• Transacciones distribuidas\n• Acciones de compensación"
+            fillcolor="#c5cae9"
+            shape=note
+        ];
+    }
+
+    // Caja de beneficios
+    Beneficios [
+        label="✨ BENEFICIOS\n\n🔒 Desacoplamiento\n• Manejadores independientes\n• Sin dependencias directas\n\n⚡ Escalabilidad\n• Procesamiento asíncrono\n• Escalado horizontal\n\n🔄 Extensibilidad\n• Fácil agregar manejadores\n• Arquitectura de plugins\n\n📊 Observabilidad\n• Seguimiento de eventos\n• Monitoreo del sistema"
+        fillcolor="#e8f5e8"
+        color="#4caf50"
+        shape=note
+    ];
+
+    // Título
+    labelloc="t";
+    label=<<B>Eventos de Dominio &amp; Comunicación Asíncrona</B><BR/>
+    <I>Arquitectura Dirigida por Eventos con Patrón BusEventos</I><BR/>
+    <FONT POINT-SIZE="10">Acoplamiento débil a través de eventos de dominio y procesamiento asíncrono</FONT>>;
+    fontsize=16;
+}

@@ -1,0 +1,307 @@
+digraph ArquitecturaLimpiaCapas {
+    rankdir=TB;
+    
+    // Configuración global
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#f8f9fa"
+        style=filled
+        pad=0.5
+        nodesep=0.8
+        ranksep=1.2
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#666666"
+    ];
+
+    // Definición de capas con colores profesionales
+    subgraph cluster_presentation {
+        label="🌐 CAPA DE PRESENTACIÓN\n(Adaptadores - API)";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        fontsize=14;
+        labeljust="l";
+        
+        ProductController [
+            label="ControladorProducto\n• POST /productos\n• GET /productos\n• PUT /productos/:id\n• PATCH /stock\n• DELETE /productos/:id"
+            fillcolor="#bbdefb"
+            color="#1565c0"
+        ];
+        
+        UserController [
+            label="ControladorUsuario\n• POST /usuarios\n• GET /usuarios\n• PUT /usuarios/:id\n• PATCH /activar\n• DELETE /usuarios/:id"
+            fillcolor="#bbdefb"
+            color="#1565c0"
+        ];
+    }
+
+    subgraph cluster_application {
+        label="🏢 CAPA DE APLICACIÓN\n(Casos de Uso y DTOs)";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        fontsize=14;
+        labeljust="l";
+        
+        // Casos de Uso
+        subgraph cluster_usecases {
+            label="Casos de Uso";
+            style=filled;
+            fillcolor="#c8e6c9";
+            color="#2e7d32";
+            
+            CrearProducto [label="CrearProducto" fillcolor="#a5d6a7"];
+            ObtenerTodosProductos [label="ObtenerTodosProductos" fillcolor="#a5d6a7"];
+            ActualizarProducto [label="ActualizarProducto" fillcolor="#a5d6a7"];
+            CrearUsuario [label="CrearUsuario" fillcolor="#a5d6a7"];
+            ActivarUsuario [label="ActivarUsuario" fillcolor="#a5d6a7"];
+        }
+        
+        // DTOs
+        subgraph cluster_dtos {
+            label="DTOs (Objetos de Transferencia)";
+            style=filled;
+            fillcolor="#c8e6c9";
+            color="#2e7d32";
+            
+            CrearProductoDTO [label="CrearProductoDTO" fillcolor="#81c784"];
+            ProductoRespuestaDTO [label="ProductoRespuestaDTO" fillcolor="#81c784"];
+            CrearUsuarioDTO [label="CrearUsuarioDTO" fillcolor="#81c784"];
+            UsuarioRespuestaDTO [label="UsuarioRespuestaDTO" fillcolor="#81c784"];
+        }
+    }
+
+    subgraph cluster_domain {
+        label="⚡ CAPA DE DOMINIO\n(Lógica de Negocio Central)";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        fontsize=14;
+        labeljust="l";
+        
+        // Entidades
+        subgraph cluster_entities {
+            label="Entidades";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            Producto [
+                label="Producto\n• validarStock()\n• actualizarDetalles()\n• aumentarStock()\n• disminuirStock()"
+                fillcolor="#ffcc02"
+            ];
+            
+            Usuario [
+                label="Usuario\n• validarEmail()\n• activar()\n• desactivar()\n• actualizarDetalles()"
+                fillcolor="#ffcc02"
+            ];
+        }
+        
+        // Objetos de Valor
+        subgraph cluster_valueobjects {
+            label="Objetos de Valor";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            Email [
+                label="Email\n• validar()\n• esIgualA()\n• aCadena()"
+                fillcolor="#ffb74d"
+            ];
+            
+            Dinero [
+                label="Dinero\n• sumar()\n• restar()\n• multiplicar()\n• comparar()"
+                fillcolor="#ffb74d"
+            ];
+        }
+        
+        // Interfaces de Repositorio
+        subgraph cluster_repositories {
+            label="Interfaces de Repositorio";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            IRepositorioProducto [
+                label="«interfaz»\nIRepositorioProducto\n• guardar()\n• buscarPorId()\n• buscarTodos()\n• actualizar()\n• eliminar()"
+                fillcolor="#ffa726"
+                shape=ellipse
+            ];
+            
+            IRepositorioUsuario [
+                label="«interfaz»\nIRepositorioUsuario\n• guardar()\n• buscarPorId()\n• buscarPorEmail()\n• buscarTodos()\n• actualizar()\n• eliminar()"
+                fillcolor="#ffa726"
+                shape=ellipse
+            ];
+        }
+        
+        // Eventos
+        subgraph cluster_events {
+            label="Eventos de Dominio";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            EventosDominio [
+                label="Eventos\n• ProductoCreado\n• ProductoActualizado\n• StockCambiado\n• UsuarioCreado"
+                fillcolor="#ff9800"
+            ];
+            
+            BusEventos [
+                label="BusEventos\n• publicar()\n• suscribir()"
+                fillcolor="#ff9800"
+            ];
+        }
+        
+        // Errores
+        ErroresDominio [
+            label="Errores de Dominio\n• ErrorValidacion\n• EntidadNoEncontrada\n• ViolacionReglaDeNegocio"
+            fillcolor="#ffab91"
+        ];
+    }
+
+    subgraph cluster_infrastructure {
+        label="🔧 CAPA DE INFRAESTRUCTURA\n(Adaptadores - Base de Datos)";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        fontsize=14;
+        labeljust="l";
+        
+        // Adaptadores de Base de Datos
+        subgraph cluster_db {
+            label="Adaptadores de Base de Datos";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            RepositorioTypeOrmProducto [
+                label="RepositorioTypeOrmProducto\n• implementa IRepositorioProducto\n• usa MapeadorProducto"
+                fillcolor="#ce93d8"
+            ];
+            
+            RepositorioTypeOrmUsuario [
+                label="RepositorioTypeOrmUsuario\n• implementa IRepositorioUsuario\n• usa MapeadorUsuario"
+                fillcolor="#ce93d8"
+            ];
+        }
+        
+        // Mapeadores
+        subgraph cluster_mappers {
+            label="Mapeadores";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            MapeadorProducto [
+                label="MapeadorProducto\n• aDominio()\n• aEntidad()\n• aArregloDominio()"
+                fillcolor="#ba68c8"
+            ];
+            
+            MapeadorUsuario [
+                label="MapeadorUsuario\n• aDominio()\n• aEntidad()\n• aArregloDominio()"
+                fillcolor="#ba68c8"
+            ];
+        }
+        
+        // Entidades de Base de Datos
+        subgraph cluster_entities_db {
+            label="Entidades de Base de Datos";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            EntidadProducto [
+                label="EntidadProducto\n@Entity('productos')\nAnotaciones TypeORM"
+                fillcolor="#ab47bc"
+            ];
+            
+            EntidadUsuario [
+                label="EntidadUsuario\n@Entity('usuarios')\nAnotaciones TypeORM"
+                fillcolor="#ab47bc"
+            ];
+        }
+    }
+
+    subgraph cluster_external {
+        label="🗄️ CAPA EXTERNA\n(Base de Datos y Servicios Externos)";
+        style=filled;
+        fillcolor="#e8eaf6";
+        color="#3f51b5";
+        fontcolor="#3f51b5";
+        fontsize=14;
+        labeljust="l";
+        
+        PostgreSQL [
+            label="PostgreSQL\nBase de Datos\n• Tabla productos\n• Tabla usuarios"
+            fillcolor="#c5cae9"
+            shape=cylinder
+        ];
+    }
+
+    // Definir dependencias entre capas (solo hacia adentro)
+    
+    // Presentación -> Aplicación
+    ProductController -> CrearProducto [label="llama" color="#1976d2"];
+    ProductController -> ObtenerTodosProductos [label="llama" color="#1976d2"];
+    ProductController -> ActualizarProducto [label="llama" color="#1976d2"];
+    ProductController -> ProductoRespuestaDTO [label="usa" color="#1976d2"];
+    
+    UserController -> CrearUsuario [label="llama" color="#1976d2"];
+    UserController -> ActivarUsuario [label="llama" color="#1976d2"];
+    UserController -> UsuarioRespuestaDTO [label="usa" color="#1976d2"];
+
+    // Aplicación -> Dominio
+    CrearProducto -> Producto [label="crea" color="#388e3c"];
+    CrearProducto -> IRepositorioProducto [label="depende de" color="#388e3c" style=dashed];
+    CrearUsuario -> Usuario [label="crea" color="#388e3c"];
+    CrearUsuario -> IRepositorioUsuario [label="depende de" color="#388e3c" style=dashed];
+    
+    CrearProductoDTO -> Producto [label="mapea a" color="#388e3c"];
+    CrearUsuarioDTO -> Usuario [label="mapea a" color="#388e3c"];
+
+    // Relaciones internas del dominio
+    Usuario -> Email [label="contiene" color="#f57c00"];
+    Producto -> Dinero [label="usa" color="#f57c00"];
+    EventosDominio -> BusEventos [label="publicado por" color="#f57c00"];
+
+    // Infraestructura -> Dominio (implementa)
+    RepositorioTypeOrmProducto -> IRepositorioProducto [label="implementa" color="#7b1fa2" style=dashed];
+    RepositorioTypeOrmUsuario -> IRepositorioUsuario [label="implementa" color="#7b1fa2" style=dashed];
+    
+    // Infraestructura interna
+    RepositorioTypeOrmProducto -> MapeadorProducto [label="usa" color="#7b1fa2"];
+    RepositorioTypeOrmUsuario -> MapeadorUsuario [label="usa" color="#7b1fa2"];
+    MapeadorProducto -> Producto [label="mapea desde/hacia" color="#7b1fa2"];
+    MapeadorProducto -> EntidadProducto [label="mapea desde/hacia" color="#7b1fa2"];
+    MapeadorUsuario -> Usuario [label="mapea desde/hacia" color="#7b1fa2"];
+    MapeadorUsuario -> EntidadUsuario [label="mapea desde/hacia" color="#7b1fa2"];
+
+    // Externa
+    RepositorioTypeOrmProducto -> PostgreSQL [label="persiste en" color="#3f51b5"];
+    RepositorioTypeOrmUsuario -> PostgreSQL [label="persiste en" color="#3f51b5"];
+
+    // Título del diagrama
+    labelloc="t";
+    label=<<B>Arquitectura Limpia - Capas &amp; Dependencias</B><BR/>
+    <I>Estructura del Proyecto NestJS</I><BR/>
+    <FONT POINT-SIZE="10">Las dependencias fluyen solo hacia adentro (Regla de Dependencia)</FONT>>;
+    fontsize=16;
+}
