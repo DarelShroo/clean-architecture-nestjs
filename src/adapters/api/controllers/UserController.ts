@@ -8,6 +8,7 @@ import { ActivateUser } from '../../../application/use-cases/ActivateUser';
 import { DeactivateUser } from '../../../application/use-cases/DeactivateUser';
 import { CreateUserDTO } from '../../../application/dtos/CreateUserDTO';
 import { UpdateUserDTO } from '../../../application/dtos/UpdateUserDTO';
+import { UserResponseDTO } from '../../../application/dtos/UserResponseDTO';
 import { DomainError } from '../../../domain/errors/DomainError';
 
 @Controller('users')
@@ -24,60 +25,60 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() dto: CreateUserDTO) {
+  async create(@Body() dto: CreateUserDTO): Promise<UserResponseDTO> {
     try {
       const user = await this.createUser.execute(dto);
-      return this.toResponse(user);
+      return UserResponseDTO.fromDomain(user);
     } catch (error) {
       this.handleError(error);
     }
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<UserResponseDTO[]> {
     try {
       const users = await this.getAllUsers.execute();
-      return users.map(u => this.toResponse(u));
+      return users.map(u => UserResponseDTO.fromDomain(u));
     } catch (error) {
       this.handleError(error);
     }
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<UserResponseDTO> {
     try {
       const user = await this.getUserById.execute(id);
-      return this.toResponse(user);
+      return UserResponseDTO.fromDomain(user);
     } catch (error) {
       this.handleError(error);
     }
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDTO) {
+  async update(@Param('id') id: string, @Body() dto: UpdateUserDTO): Promise<UserResponseDTO> {
     try {
       const user = await this.updateUser.execute(id, dto);
-      return this.toResponse(user);
+      return UserResponseDTO.fromDomain(user);
     } catch (error) {
       this.handleError(error);
     }
   }
 
   @Patch(':id/activate')
-  async activate(@Param('id') id: string) {
+  async activate(@Param('id') id: string): Promise<UserResponseDTO> {
     try {
       const user = await this.activateUser.execute(id);
-      return this.toResponse(user);
+      return UserResponseDTO.fromDomain(user);
     } catch (error) {
       this.handleError(error);
     }
   }
 
   @Patch(':id/deactivate')
-  async deactivate(@Param('id') id: string) {
+  async deactivate(@Param('id') id: string): Promise<UserResponseDTO> {
     try {
       const user = await this.deactivateUser.execute(id);
-      return this.toResponse(user);
+      return UserResponseDTO.fromDomain(user);
     } catch (error) {
       this.handleError(error);
     }
@@ -93,16 +94,6 @@ export class UserController {
     }
   }
 
-  private toResponse(user: any) {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isActive: user.isActive,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
-  }
 
   private handleError(error: any): never {
     if (error instanceof DomainError) {
