@@ -248,7 +248,7 @@ digraph EventsFlow {
 
     // Título
     labelloc="t";
-    label=<<B>📡 Domain Events & Asynchronous Communication</B><BR/>
+    label=<<B>Domain Events &amp; Asynchronous Communication</B><BR/>
     <I>Event-Driven Architecture with EventBus Pattern</I><BR/>
     <FONT POINT-SIZE="10">Loose coupling through domain events and async processing</FONT>>;
     fontsize=16;

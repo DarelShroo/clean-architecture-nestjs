@@ -180,8 +180,8 @@ digraph RequestFlow {
 
     // Título
     labelloc="t";
-    label=<<B>🔄 Request Flow - Create Product</B><BR/>
+    label=<<B>Request Flow - Create Product</B><BR/>
     <I>Complete flow from HTTP request to database persistence</I><BR/>
-    <FONT POINT-SIZE="10">Blue: Request → Green: Application → Orange: Domain → Purple: Infrastructure → Pink: Response</FONT>>;
+    <FONT POINT-SIZE="10">Blue: Request - Green: Application - Orange: Domain - Purple: Infrastructure - Pink: Response</FONT>>;
     fontsize=16;
 }
