@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { IUserRepository } from '../../../domain/repositories/IUserRepository';
 import { User } from '../../../domain/entities/User';
 import { UserEntity } from '../entities/UserEntity';
+import { UserMapper } from '../mappers/UserMapper';
 
 @Injectable()
 export class TypeOrmUserRepository implements IUserRepository {
@@ -13,28 +14,28 @@ export class TypeOrmUserRepository implements IUserRepository {
   ) {}
 
   async save(user: User): Promise<User> {
-    const entity = this.toEntity(user);
+    const entity = UserMapper.toEntity(user);
     const saved = await this.repository.save(entity);
-    return this.toDomain(saved);
+    return UserMapper.toDomain(saved);
   }
 
   async findById(id: string): Promise<User | null> {
     const entity = await this.repository.findOne({ where: { id } });
-    return entity ? this.toDomain(entity) : null;
+    return entity ? UserMapper.toDomain(entity) : null;
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const entity = await this.repository.findOne({ where: { email } });
-    return entity ? this.toDomain(entity) : null;
+    return entity ? UserMapper.toDomain(entity) : null;
   }
 
   async findAll(): Promise<User[]> {
     const entities = await this.repository.find();
-    return entities.map(entity => this.toDomain(entity));
+    return UserMapper.toDomainArray(entities);
   }
 
   async update(user: User): Promise<User> {
-    const entity = this.toEntity(user);
+    const entity = UserMapper.toEntity(user);
     await this.repository.save(entity);
     return user;
   }
@@ -44,25 +45,4 @@ export class TypeOrmUserRepository implements IUserRepository {
     return result.affected !== null && result.affected !== undefined && result.affected > 0;
   }
 
-  private toDomain(entity: UserEntity): User {
-    return new User(
-      entity.id,
-      entity.name,
-      entity.email,
-      entity.isActive,
-      entity.createdAt,
-      entity.updatedAt,
-    );
-  }
-
-  private toEntity(user: User): UserEntity {
-    const entity = new UserEntity();
-    entity.id = user.id;
-    entity.name = user.name;
-    entity.email = user.email;
-    entity.isActive = user.isActive;
-    entity.createdAt = user.createdAt;
-    entity.updatedAt = user.updatedAt;
-    return entity;
-  }
 }
