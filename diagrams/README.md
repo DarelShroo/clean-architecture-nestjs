@@ -20,6 +20,11 @@ choco install graphviz
 scoop install graphviz
 ```
 
+## 🌍 Idiomas Disponibles
+
+- **🇺🇸 English**: Diagramas en inglés (este directorio)
+- **🇪🇸 Español**: Versión completa en español → [`ES/`](ES/) 
+
 ## 📋 Diagramas Disponibles
 
 ### 1. 🏛️ Clean Architecture Layers (`clean-architecture-layers.dot`)
@@ -110,7 +115,9 @@ dot -Tsvg diagrams/events-flow.dot -o diagrams/events-flow.svg
 
 ## 🚀 Generar Todos los Diagramas
 
-### Script Bash (Linux/macOS)
+### Para Diagramas en Inglés
+
+#### Script Bash (Linux/macOS)
 ```bash
 #!/bin/bash
 cd diagrams
@@ -154,6 +161,22 @@ dot -Tsvg file-structure.dot -o file-structure.svg
 dot -Tsvg events-flow.dot -o events-flow.svg
 
 Write-Host "✅ All diagrams generated successfully!" -ForegroundColor Green
+```
+
+### Para Diagramas en Español
+
+```bash
+# Cambiar a la carpeta ES
+cd ES
+
+# Ejecutar script de generación en español
+./generar-todos.sh
+
+# O generar manualmente
+dot -Tpng arquitectura-limpia-capas.dot -o arquitectura-limpia-capas.png
+dot -Tpng flujo-peticion.dot -o flujo-peticion.png
+dot -Tpng estructura-archivos.dot -o estructura-archivos.png
+dot -Tpng flujo-eventos.dot -o flujo-eventos.png
 ```
 
 ## 🎨 Formatos de Salida Disponibles

@@ -1,0 +1,187 @@
+digraph FlujoPeticion {
+    rankdir=TB;
+    
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#fafafa"
+        style=filled
+        pad=0.5
+        nodesep=0.6
+        ranksep=1.0
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#424242"
+    ];
+
+    // Cliente
+    Cliente [
+        label="👤 Cliente\n(Navegador/Móvil/API)"
+        fillcolor="#e1f5fe"
+        color="#0277bd"
+        shape=ellipse
+    ];
+
+    // Capa de Presentación
+    subgraph cluster_presentation {
+        label="🌐 CAPA DE PRESENTACIÓN";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        
+        Peticion [
+            label="📨 Petición HTTP\nPOST /productos\n{\n  \"nombre\": \"Laptop\",\n  \"precio\": 999.99,\n  \"stock\": 50\n}"
+            fillcolor="#bbdefb"
+            shape=note
+        ];
+        
+        Controlador [
+            label="🎯 ControladorProducto\n@Post()\ncrear(@Body() dto)"
+            fillcolor="#90caf9"
+        ];
+        
+        Validacion [
+            label="✅ Validación DTO\nCrearProductoDTO\n• @EsCadena() nombre\n• @EsNumero() precio\n• @Min(0) stock"
+            fillcolor="#64b5f6"
+        ];
+        
+        Respuesta [
+            label="📤 Respuesta HTTP\n201 Creado\nProductoRespuestaDTO"
+            fillcolor="#42a5f5"
+            shape=note
+        ];
+    }
+
+    // Capa de Aplicación
+    subgraph cluster_application {
+        label="🏢 CAPA DE APLICACIÓN";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        
+        CasoDeUso [
+            label="⚙️ CrearProducto\nCaso de Uso\nejecutar(dto)"
+            fillcolor="#a5d6a7"
+        ];
+        
+        GeneracionId [
+            label="🆔 Generación de ID\nGeneradorId.generar()\nCreación de UUID"
+            fillcolor="#81c784"
+        ];
+        
+        CreacionDominio [
+            label="🏗️ Creación de Dominio\nProducto.crear()\nValidación de negocio"
+            fillcolor="#66bb6a"
+        ];
+    }
+
+    // Capa de Dominio
+    subgraph cluster_domain {
+        label="⚡ CAPA DE DOMINIO";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        
+        EntidadDominio [
+            label="📦 Entidad Producto\n• Validar reglas de negocio\n• precio >= 0\n• stock >= 0\n• nombre no vacío"
+            fillcolor="#ffb74d"
+        ];
+        
+        EventosDominio [
+            label="📡 Eventos de Dominio\nProductoCreado\nbusEventos.publicar()"
+            fillcolor="#ffa726"
+        ];
+        
+        InterfazRepositorio [
+            label="📋 IRepositorioProducto\ninterfaz\nguardar(producto)"
+            fillcolor="#ff9800"
+            shape=ellipse
+        ];
+    }
+
+    // Capa de Infraestructura
+    subgraph cluster_infrastructure {
+        label="🔧 CAPA DE INFRAESTRUCTURA";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        
+        Repositorio [
+            label="🗃️ RepositorioTypeOrmProducto\nimplementa IRepositorioProducto"
+            fillcolor="#ce93d8"
+        ];
+        
+        Mapeador [
+            label="🔄 MapeadorProducto\naDominio() ↔ aEntidad()\nTransformación de datos"
+            fillcolor="#ba68c8"
+        ];
+        
+        EntidadBaseDatos [
+            label="📊 EntidadProducto\n@Entity('productos')\nAnotaciones TypeORM"
+            fillcolor="#ab47bc"
+        ];
+    }
+
+    // Base de Datos
+    BaseDatos [
+        label="🗄️ PostgreSQL\ntabla productos\noperación INSERT"
+        fillcolor="#c5cae9"
+        color="#3f51b5"
+        shape=cylinder
+    ];
+
+    // Flujo principal (ida)
+    Cliente -> Peticion [label="1" color="#2196f3" fontcolor="#2196f3"];
+    Peticion -> Controlador [label="2" color="#2196f3" fontcolor="#2196f3"];
+    Controlador -> Validacion [label="3" color="#2196f3" fontcolor="#2196f3"];
+    Validacion -> CasoDeUso [label="4" color="#4caf50" fontcolor="#4caf50"];
+    CasoDeUso -> GeneracionId [label="5" color="#4caf50" fontcolor="#4caf50"];
+    GeneracionId -> CreacionDominio [label="6" color="#4caf50" fontcolor="#4caf50"];
+    CreacionDominio -> EntidadDominio [label="7" color="#ff9800" fontcolor="#ff9800"];
+    EntidadDominio -> EventosDominio [label="8" color="#ff9800" fontcolor="#ff9800"];
+    CasoDeUso -> InterfazRepositorio [label="9" color="#ff9800" fontcolor="#ff9800"];
+    InterfazRepositorio -> Repositorio [label="10" color="#9c27b0" fontcolor="#9c27b0"];
+    Repositorio -> Mapeador [label="11" color="#9c27b0" fontcolor="#9c27b0"];
+    Mapeador -> EntidadBaseDatos [label="12" color="#9c27b0" fontcolor="#9c27b0"];
+    EntidadBaseDatos -> BaseDatos [label="13" color="#3f51b5" fontcolor="#3f51b5"];
+
+    // Flujo de retorno (vuelta)
+    BaseDatos -> Repositorio [label="14" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Repositorio -> Mapeador [label="15" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Mapeador -> CasoDeUso [label="16" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    CasoDeUso -> Controlador [label="17" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Controlador -> Respuesta [label="18" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Respuesta -> Cliente [label="19" color="#e91e63" fontcolor="#e91e63" style=dashed];
+
+    // Eventos asíncronos
+    EventosDominio -> ManejadorEventos [label="asíncrono" color="#ff5722" style=dotted];
+    
+    ManejadorEventos [
+        label="📬 Manejadores de Eventos\n• Enviar notificaciones\n• Actualizar estadísticas\n• Registrar actividades"
+        fillcolor="#ffcc80"
+        color="#f57c00"
+        shape=diamond
+    ];
+
+    // Título
+    labelloc="t";
+    label=<<B>Flujo de Petición - Crear Producto</B><BR/>
+    <I>Flujo completo desde petición HTTP hasta persistencia en base de datos</I><BR/>
+    <FONT POINT-SIZE="10">Azul: Petición - Verde: Aplicación - Naranja: Dominio - Púrpura: Infraestructura - Rosa: Respuesta</FONT>>;
+    fontsize=16;
+}
