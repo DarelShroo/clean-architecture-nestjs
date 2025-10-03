@@ -300,7 +300,7 @@ digraph CleanArchitectureLayers {
 
     // Título del diagrama
     labelloc="t";
-    label=<<B>🏛️ Clean Architecture - Layers & Dependencies</B><BR/>
+    label=<<B>Clean Architecture - Layers &amp; Dependencies</B><BR/>
     <I>NestJS Project Structure</I><BR/>
     <FONT POINT-SIZE="10">Dependencies flow inward only (Dependency Rule)</FONT>>;
     fontsize=16;

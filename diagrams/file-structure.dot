@@ -265,7 +265,7 @@ digraph FileStructure {
 
     // Título
     labelloc="t";
-    label=<<B>📁 Project File Structure - Clean Architecture</B><BR/>
+    label=<<B>Project File Structure - Clean Architecture</B><BR/>
     <I>NestJS TypeScript Project Organization</I><BR/>
     <FONT POINT-SIZE="10">Total: ~50+ files organized by architectural layers</FONT>>;
     fontsize=16;
