@@ -32,7 +32,9 @@ export class Money {
 
   subtract(other: Money): Money {
     if (this.currency !== other.currency) {
-      throw new ValidationError('Cannot subtract money with different currencies');
+      throw new ValidationError(
+        'Cannot subtract money with different currencies',
+      );
     }
     return new Money(this.amount - other.amount, this.currency);
   }
@@ -47,7 +49,9 @@ export class Money {
 
   isGreaterThan(other: Money): boolean {
     if (this.currency !== other.currency) {
-      throw new ValidationError('Cannot compare money with different currencies');
+      throw new ValidationError(
+        'Cannot compare money with different currencies',
+      );
     }
     return this.amount > other.amount;
   }

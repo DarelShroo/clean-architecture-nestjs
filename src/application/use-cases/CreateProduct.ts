@@ -13,7 +13,13 @@ export class CreateProduct {
 
   async execute(dto: CreateProductDTO): Promise<Product> {
     const id = IdGenerator.generate();
-    const product = Product.create(id, dto.name, dto.description, dto.price, dto.stock);
+    const product = Product.create(
+      id,
+      dto.name,
+      dto.description,
+      dto.price,
+      dto.stock,
+    );
     return await this.productRepository.save(product);
   }
 }

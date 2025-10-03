@@ -17,8 +17,8 @@ export class InMemoryEventBus implements EventBus {
 
   async publish(event: DomainEvent): Promise<void> {
     const eventHandlers = this.handlers.get(event.getEventName()) || [];
-    
-    const promises = eventHandlers.map(handler => {
+
+    const promises = eventHandlers.map((handler) => {
       try {
         return handler.handle(event);
       } catch (error) {
@@ -37,7 +37,7 @@ export class InMemoryEventBus implements EventBus {
     if (!this.handlers.has(eventName)) {
       this.handlers.set(eventName, []);
     }
-    
+
     this.handlers.get(eventName)!.push(handler);
   }
 

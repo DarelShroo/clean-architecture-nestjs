@@ -26,7 +26,13 @@ describe('CreateProduct Use Case', () => {
       stock: 50,
     };
 
-    const product = Product.create('id', dto.name, dto.description, dto.price, dto.stock);
+    const product = Product.create(
+      'id',
+      dto.name,
+      dto.description,
+      dto.price,
+      dto.stock,
+    );
     mockRepository.save.mockResolvedValue(product);
 
     const result = await createProduct.execute(dto);

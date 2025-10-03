@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Put, Patch, Delete, Body, Param, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { CreateUser } from '../../../application/use-cases/CreateUser';
 import { GetAllUsers } from '../../../application/use-cases/GetAllUsers';
 import { GetUserById } from '../../../application/use-cases/GetUserById';
@@ -38,7 +50,7 @@ export class UserController {
   async findAll(): Promise<UserResponseDTO[]> {
     try {
       const users = await this.getAllUsers.execute();
-      return users.map(u => UserResponseDTO.fromDomain(u));
+      return users.map((u) => UserResponseDTO.fromDomain(u));
     } catch (error) {
       this.handleError(error);
     }
@@ -55,7 +67,10 @@ export class UserController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDTO): Promise<UserResponseDTO> {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserDTO,
+  ): Promise<UserResponseDTO> {
     try {
       const user = await this.updateUser.execute(id, dto);
       return UserResponseDTO.fromDomain(user);
@@ -94,11 +109,13 @@ export class UserController {
     }
   }
 
-
   private handleError(error: any): never {
     if (error instanceof DomainError) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-    throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+    throw new HttpException(
+      'Internal server error',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 }

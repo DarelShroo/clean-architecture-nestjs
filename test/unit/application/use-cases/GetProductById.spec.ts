@@ -31,6 +31,8 @@ describe('GetProductById Use Case', () => {
   it('should throw error when product not found', async () => {
     mockRepository.findById.mockResolvedValue(null);
 
-    await expect(getProductById.execute('id')).rejects.toThrow(EntityNotFoundError);
+    await expect(getProductById.execute('id')).rejects.toThrow(
+      EntityNotFoundError,
+    );
   });
 });

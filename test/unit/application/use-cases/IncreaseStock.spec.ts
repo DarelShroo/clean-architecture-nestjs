@@ -35,6 +35,8 @@ describe('IncreaseStock Use Case', () => {
   it('should throw error when product not found', async () => {
     mockRepository.findById.mockResolvedValue(null);
 
-    await expect(increaseStock.execute('id', { quantity: 10 })).rejects.toThrow(EntityNotFoundError);
+    await expect(increaseStock.execute('id', { quantity: 10 })).rejects.toThrow(
+      EntityNotFoundError,
+    );
   });
 });

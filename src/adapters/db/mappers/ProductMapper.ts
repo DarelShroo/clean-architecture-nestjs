@@ -27,10 +27,10 @@ export class ProductMapper {
   }
 
   static toDomainArray(entities: ProductEntity[]): Product[] {
-    return entities.map(entity => this.toDomain(entity));
+    return entities.map((entity) => this.toDomain(entity));
   }
 
   static toEntityArray(products: Product[]): ProductEntity[] {
-    return products.map(product => this.toEntity(product));
+    return products.map((product) => this.toEntity(product));
   }
 }
