@@ -1,0 +1,272 @@
+digraph FileStructure {
+    rankdir=LR;
+    
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#f8f9fa"
+        style=filled
+        pad=0.5
+        nodesep=0.4
+        ranksep=0.8
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        style=filled
+        shape=box
+        margin=0.05
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=8
+        color="#666666"
+    ];
+
+    // Root del proyecto
+    root [
+        label="📁 prueba-clean-architecture\n(Project Root)"
+        fillcolor="#e3f2fd"
+        color="#1976d2"
+        fontsize=11
+    ];
+
+    // Src principal
+    src [
+        label="📁 src"
+        fillcolor="#f3e5f5"
+        color="#7b1fa2"
+        fontsize=10
+    ];
+
+    // Domain Layer
+    domain [
+        label="📁 domain\n🧠 Core Business Logic"
+        fillcolor="#fff3e0"
+        color="#f57c00"
+    ];
+
+    domain_entities [
+        label="📁 entities\n├── Product.ts ⭐\n├── User.ts ⭐"
+        fillcolor="#ffe0b2"
+        shape=note
+    ];
+
+    domain_value_objects [
+        label="📁 value-objects\n├── Email.ts 💎\n├── Money.ts 💎"
+        fillcolor="#ffe0b2"
+        shape=note
+    ];
+
+    domain_repositories [
+        label="📁 repositories\n├── IProductRepository.ts 📋\n├── IUserRepository.ts 📋"
+        fillcolor="#ffe0b2"
+        shape=note
+    ];
+
+    domain_events [
+        label="📁 events\n├── DomainEvent.ts 📡\n├── EventBus.ts 🚌"
+        fillcolor="#ffe0b2"
+        shape=note
+    ];
+
+    domain_errors [
+        label="📄 errors/DomainError.ts\n⚠️ Business Exceptions"
+        fillcolor="#ffe0b2"
+        shape=note
+    ];
+
+    // Application Layer
+    application [
+        label="📁 application\n🏢 Use Cases & DTOs"
+        fillcolor="#e8f5e8"
+        color="#388e3c"
+    ];
+
+    app_usecases [
+        label="📁 use-cases\n├── CreateProduct.ts ⚙️\n├── GetAllProducts.ts ⚙️\n├── UpdateProduct.ts ⚙️\n├── CreateUser.ts ⚙️\n├── ActivateUser.ts ⚙️\n└── ... (14 files total)"
+        fillcolor="#c8e6c9"
+        shape=note
+    ];
+
+    app_dtos [
+        label="📁 dtos\n├── CreateProductDTO.ts 📨\n├── ProductResponseDTO.ts 📤\n├── CreateUserDTO.ts 📨\n├── UserResponseDTO.ts 📤\n└── UpdateXXXDTO.ts files"
+        fillcolor="#c8e6c9"
+        shape=note
+    ];
+
+    app_interfaces [
+        label="📁 interfaces\n├── ICreateProduct.ts 🔌"
+        fillcolor="#c8e6c9"
+        shape=note
+    ];
+
+    // Adapters Layer
+    adapters [
+        label="📁 adapters\n🔌 External Interfaces"
+        fillcolor="#f3e5f5"
+        color="#7b1fa2"
+    ];
+
+    adapters_api [
+        label="📁 api/controllers\n├── ProductController.ts 🎯\n├── UserController.ts 🎯"
+        fillcolor="#e1bee7"
+        shape=note
+    ];
+
+    adapters_db [
+        label="📁 db"
+        fillcolor="#e1bee7"
+    ];
+
+    db_entities [
+        label="📁 db/entities\n├── ProductEntity.ts 📊\n├── UserEntity.ts 📊"
+        fillcolor="#d1c4e9"
+        shape=note
+    ];
+
+    db_repositories [
+        label="📁 db/repositories\n├── TypeOrmProductRepository.ts 🗃️\n├── TypeOrmUserRepository.ts 🗃️"
+        fillcolor="#d1c4e9"
+        shape=note
+    ];
+
+    db_mappers [
+        label="📁 db/mappers\n├── ProductMapper.ts 🔄\n├── UserMapper.ts 🔄"
+        fillcolor="#d1c4e9"
+        shape=note
+    ];
+
+    // Infrastructure Layer
+    infrastructure [
+        label="📁 infrastructure\n🔧 Framework Configuration"
+        fillcolor="#e8eaf6"
+        color="#3f51b5"
+    ];
+
+    infra_config [
+        label="📁 config\n├── database.config.ts ⚙️"
+        fillcolor="#c5cae9"
+        shape=note
+    ];
+
+    infra_modules [
+        label="📁 modules\n├── ProductModule.ts 📦\n├── UserModule.ts 📦"
+        fillcolor="#c5cae9"
+        shape=note
+    ];
+
+    // Shared utilities
+    shared [
+        label="📁 shared\n🛠️ Common Utilities"
+        fillcolor="#f1f8e9"
+        color="#689f38"
+    ];
+
+    shared_utils [
+        label="📁 utils\n├── IdGenerator.ts 🆔"
+        fillcolor="#dcedc8"
+        shape=note
+    ];
+
+    // Main files
+    main_files [
+        label="📄 Main Files\n├── main.ts 🚀\n├── app.module.ts 📱\n├── app.controller.ts 🎮\n└── app.service.ts 🔧"
+        fillcolor="#f3e5f5"
+        shape=note
+    ];
+
+    // Test structure
+    test [
+        label="📁 test\n🧪 Testing Suite"
+        fillcolor="#f3e5f5"
+        color="#7b1fa2"
+    ];
+
+    test_unit [
+        label="📁 unit\n├── domain/ 🧠\n│   ├── entities/\n│   ├── value-objects/ 💎\n│   └── events/ 📡\n├── application/ 🏢\n│   └── use-cases/\n└── adapters/ 🔌\n    └── db/mappers/"
+        fillcolor="#e1bee7"
+        shape=note
+    ];
+
+    test_e2e [
+        label="📁 e2e\n├── app.e2e-spec.ts 🔗"
+        fillcolor="#e1bee7"
+        shape=note
+    ];
+
+    // Config files
+    config_files [
+        label="📄 Config Files\n├── package.json 📦\n├── tsconfig.json ⚙️\n├── nest-cli.json 🐦\n├── docker-compose.yml 🐳\n├── Dockerfile 📋\n├── .env / .env.example 🔐\n└── README.md 📖"
+        fillcolor="#f5f5f5"
+        shape=note
+    ];
+
+    // Documentation
+    docs [
+        label="📄 Documentation\n├── README_CLEAN_ARCH.md 📚\n├── CLEAN_ARCHITECTURE_IMPROVEMENTS.md 📈\n├── DEPLOYMENT_SUMMARY.md 🚀\n└── TEST_SUMMARY.md 🧪"
+        fillcolor="#e8f5e8"
+        shape=note
+    ];
+
+    // Connections - Jerarquía de archivos
+    root -> src;
+    root -> test;
+    root -> config_files;
+    root -> docs;
+
+    // Src structure
+    src -> domain;
+    src -> application;
+    src -> adapters;
+    src -> infrastructure;
+    src -> shared;
+    src -> main_files;
+
+    // Domain structure
+    domain -> domain_entities;
+    domain -> domain_value_objects;
+    domain -> domain_repositories;
+    domain -> domain_events;
+    domain -> domain_errors;
+
+    // Application structure
+    application -> app_usecases;
+    application -> app_dtos;
+    application -> app_interfaces;
+
+    // Adapters structure
+    adapters -> adapters_api;
+    adapters -> adapters_db;
+    adapters_db -> db_entities;
+    adapters_db -> db_repositories;
+    adapters_db -> db_mappers;
+
+    // Infrastructure structure
+    infrastructure -> infra_config;
+    infrastructure -> infra_modules;
+
+    // Shared structure
+    shared -> shared_utils;
+
+    // Test structure
+    test -> test_unit;
+    test -> test_e2e;
+
+    // Dependency relationships (colored by layer)
+    adapters_api -> app_usecases [label="calls" color="#1976d2" style=dashed];
+    app_usecases -> domain_entities [label="creates" color="#388e3c" style=dashed];
+    app_usecases -> domain_repositories [label="depends" color="#388e3c" style=dashed];
+    db_repositories -> domain_repositories [label="implements" color="#7b1fa2" style=dashed];
+    db_mappers -> domain_entities [label="converts" color="#7b1fa2" style=dashed];
+    domain_entities -> domain_value_objects [label="uses" color="#f57c00" style=dashed];
+
+    // Título
+    labelloc="t";
+    label=<<B>📁 Project File Structure - Clean Architecture</B><BR/>
+    <I>NestJS TypeScript Project Organization</I><BR/>
+    <FONT POINT-SIZE="10">Total: ~50+ files organized by architectural layers</FONT>>;
+    fontsize=16;
+}

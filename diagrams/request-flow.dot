@@ -1,0 +1,187 @@
+digraph RequestFlow {
+    rankdir=TB;
+    
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#fafafa"
+        style=filled
+        pad=0.5
+        nodesep=0.6
+        ranksep=1.0
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#424242"
+    ];
+
+    // Cliente
+    Client [
+        label="👤 Client\n(Browser/Mobile/API)"
+        fillcolor="#e1f5fe"
+        color="#0277bd"
+        shape=ellipse
+    ];
+
+    // Presentation Layer
+    subgraph cluster_presentation {
+        label="🌐 PRESENTATION LAYER";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        
+        Request [
+            label="📨 HTTP Request\nPOST /products\n{\n  \"name\": \"Laptop\",\n  \"price\": 999.99,\n  \"stock\": 50\n}"
+            fillcolor="#bbdefb"
+            shape=note
+        ];
+        
+        Controller [
+            label="🎯 ProductController\n@Post()\ncreate(@Body() dto)"
+            fillcolor="#90caf9"
+        ];
+        
+        Validation [
+            label="✅ DTO Validation\nCreateProductDTO\n• @IsString() name\n• @IsNumber() price\n• @Min(0) stock"
+            fillcolor="#64b5f6"
+        ];
+        
+        Response [
+            label="📤 HTTP Response\n201 Created\nProductResponseDTO"
+            fillcolor="#42a5f5"
+            shape=note
+        ];
+    }
+
+    // Application Layer
+    subgraph cluster_application {
+        label="🏢 APPLICATION LAYER";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        
+        UseCase [
+            label="⚙️ CreateProduct\nUse Case\nexecute(dto)"
+            fillcolor="#a5d6a7"
+        ];
+        
+        IdGeneration [
+            label="🆔 ID Generation\nIdGenerator.generate()\nUUID creation"
+            fillcolor="#81c784"
+        ];
+        
+        DomainCreation [
+            label="🏗️ Domain Creation\nProduct.create()\nBusiness validation"
+            fillcolor="#66bb6a"
+        ];
+    }
+
+    // Domain Layer
+    subgraph cluster_domain {
+        label="⚡ DOMAIN LAYER";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        
+        DomainEntity [
+            label="📦 Product Entity\n• Validate business rules\n• price >= 0\n• stock >= 0\n• name not empty"
+            fillcolor="#ffb74d"
+        ];
+        
+        DomainEvents [
+            label="📡 Domain Events\nProductCreated\neventBus.publish()"
+            fillcolor="#ffa726"
+        ];
+        
+        RepositoryInterface [
+            label="📋 IProductRepository\ninterface\nsave(product)"
+            fillcolor="#ff9800"
+            shape=ellipse
+        ];
+    }
+
+    // Infrastructure Layer
+    subgraph cluster_infrastructure {
+        label="🔧 INFRASTRUCTURE LAYER";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        
+        Repository [
+            label="🗃️ TypeOrmProductRepository\nimplements IProductRepository"
+            fillcolor="#ce93d8"
+        ];
+        
+        Mapper [
+            label="🔄 ProductMapper\ntoDomain() ↔ toEntity()\nData transformation"
+            fillcolor="#ba68c8"
+        ];
+        
+        DatabaseEntity [
+            label="📊 ProductEntity\n@Entity('products')\nTypeORM annotations"
+            fillcolor="#ab47bc"
+        ];
+    }
+
+    // Database
+    Database [
+        label="🗄️ PostgreSQL\nproducts table\nINSERT operation"
+        fillcolor="#c5cae9"
+        color="#3f51b5"
+        shape=cylinder
+    ];
+
+    // Flujo principal (ida)
+    Client -> Request [label="1" color="#2196f3" fontcolor="#2196f3"];
+    Request -> Controller [label="2" color="#2196f3" fontcolor="#2196f3"];
+    Controller -> Validation [label="3" color="#2196f3" fontcolor="#2196f3"];
+    Validation -> UseCase [label="4" color="#4caf50" fontcolor="#4caf50"];
+    UseCase -> IdGeneration [label="5" color="#4caf50" fontcolor="#4caf50"];
+    IdGeneration -> DomainCreation [label="6" color="#4caf50" fontcolor="#4caf50"];
+    DomainCreation -> DomainEntity [label="7" color="#ff9800" fontcolor="#ff9800"];
+    DomainEntity -> DomainEvents [label="8" color="#ff9800" fontcolor="#ff9800"];
+    UseCase -> RepositoryInterface [label="9" color="#ff9800" fontcolor="#ff9800"];
+    RepositoryInterface -> Repository [label="10" color="#9c27b0" fontcolor="#9c27b0"];
+    Repository -> Mapper [label="11" color="#9c27b0" fontcolor="#9c27b0"];
+    Mapper -> DatabaseEntity [label="12" color="#9c27b0" fontcolor="#9c27b0"];
+    DatabaseEntity -> Database [label="13" color="#3f51b5" fontcolor="#3f51b5"];
+
+    // Flujo de retorno (vuelta)
+    Database -> Repository [label="14" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Repository -> Mapper [label="15" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Mapper -> UseCase [label="16" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    UseCase -> Controller [label="17" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Controller -> Response [label="18" color="#e91e63" fontcolor="#e91e63" style=dashed];
+    Response -> Client [label="19" color="#e91e63" fontcolor="#e91e63" style=dashed];
+
+    // Eventos asíncronos
+    DomainEvents -> EventHandler [label="async" color="#ff5722" style=dotted];
+    
+    EventHandler [
+        label="📬 Event Handlers\n• Send notifications\n• Update statistics\n• Log activities"
+        fillcolor="#ffcc80"
+        color="#f57c00"
+        shape=diamond
+    ];
+
+    // Título
+    labelloc="t";
+    label=<<B>🔄 Request Flow - Create Product</B><BR/>
+    <I>Complete flow from HTTP request to database persistence</I><BR/>
+    <FONT POINT-SIZE="10">Blue: Request → Green: Application → Orange: Domain → Purple: Infrastructure → Pink: Response</FONT>>;
+    fontsize=16;
+}
