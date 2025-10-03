@@ -1,0 +1,307 @@
+digraph CleanArchitectureLayers {
+    rankdir=TB;
+    
+    // Configuración global
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#f8f9fa"
+        style=filled
+        pad=0.5
+        nodesep=0.8
+        ranksep=1.2
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#666666"
+    ];
+
+    // Definición de capas con colores profesionales
+    subgraph cluster_presentation {
+        label="🌐 PRESENTATION LAYER\n(Adapters - API)";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        fontsize=14;
+        labeljust="l";
+        
+        ProductController [
+            label="ProductController\n• POST /products\n• GET /products\n• PUT /products/:id\n• PATCH /stock\n• DELETE /products/:id"
+            fillcolor="#bbdefb"
+            color="#1565c0"
+        ];
+        
+        UserController [
+            label="UserController\n• POST /users\n• GET /users\n• PUT /users/:id\n• PATCH /activate\n• DELETE /users/:id"
+            fillcolor="#bbdefb"
+            color="#1565c0"
+        ];
+    }
+
+    subgraph cluster_application {
+        label="🏢 APPLICATION LAYER\n(Use Cases & DTOs)";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        fontsize=14;
+        labeljust="l";
+        
+        // Use Cases
+        subgraph cluster_usecases {
+            label="Use Cases";
+            style=filled;
+            fillcolor="#c8e6c9";
+            color="#2e7d32";
+            
+            CreateProduct [label="CreateProduct" fillcolor="#a5d6a7"];
+            GetAllProducts [label="GetAllProducts" fillcolor="#a5d6a7"];
+            UpdateProduct [label="UpdateProduct" fillcolor="#a5d6a7"];
+            CreateUser [label="CreateUser" fillcolor="#a5d6a7"];
+            ActivateUser [label="ActivateUser" fillcolor="#a5d6a7"];
+        }
+        
+        // DTOs
+        subgraph cluster_dtos {
+            label="DTOs";
+            style=filled;
+            fillcolor="#c8e6c9";
+            color="#2e7d32";
+            
+            CreateProductDTO [label="CreateProductDTO" fillcolor="#81c784"];
+            ProductResponseDTO [label="ProductResponseDTO" fillcolor="#81c784"];
+            CreateUserDTO [label="CreateUserDTO" fillcolor="#81c784"];
+            UserResponseDTO [label="UserResponseDTO" fillcolor="#81c784"];
+        }
+    }
+
+    subgraph cluster_domain {
+        label="⚡ DOMAIN LAYER\n(Core Business Logic)";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        fontsize=14;
+        labeljust="l";
+        
+        // Entities
+        subgraph cluster_entities {
+            label="Entities";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            Product [
+                label="Product\n• validateStock()\n• updateDetails()\n• increaseStock()\n• decreaseStock()"
+                fillcolor="#ffcc02"
+            ];
+            
+            User [
+                label="User\n• validateEmail()\n• activate()\n• deactivate()\n• updateDetails()"
+                fillcolor="#ffcc02"
+            ];
+        }
+        
+        // Value Objects
+        subgraph cluster_valueobjects {
+            label="Value Objects";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            Email [
+                label="Email\n• validate()\n• equals()\n• toString()"
+                fillcolor="#ffb74d"
+            ];
+            
+            Money [
+                label="Money\n• add()\n• subtract()\n• multiply()\n• compare()"
+                fillcolor="#ffb74d"
+            ];
+        }
+        
+        // Repository Interfaces
+        subgraph cluster_repositories {
+            label="Repository Interfaces";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            IProductRepository [
+                label="«interface»\nIProductRepository\n• save()\n• findById()\n• findAll()\n• update()\n• delete()"
+                fillcolor="#ffa726"
+                shape=ellipse
+            ];
+            
+            IUserRepository [
+                label="«interface»\nIUserRepository\n• save()\n• findById()\n• findByEmail()\n• findAll()\n• update()\n• delete()"
+                fillcolor="#ffa726"
+                shape=ellipse
+            ];
+        }
+        
+        // Events
+        subgraph cluster_events {
+            label="Domain Events";
+            style=filled;
+            fillcolor="#ffe0b2";
+            color="#ef6c00";
+            
+            DomainEvents [
+                label="Events\n• ProductCreated\n• ProductUpdated\n• StockChanged\n• UserCreated"
+                fillcolor="#ff9800"
+            ];
+            
+            EventBus [
+                label="EventBus\n• publish()\n• subscribe()"
+                fillcolor="#ff9800"
+            ];
+        }
+        
+        // Errors
+        DomainErrors [
+            label="Domain Errors\n• ValidationError\n• EntityNotFoundError\n• BusinessRuleViolation"
+            fillcolor="#ffab91"
+        ];
+    }
+
+    subgraph cluster_infrastructure {
+        label="🔧 INFRASTRUCTURE LAYER\n(Adapters - Database)";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        fontsize=14;
+        labeljust="l";
+        
+        // Database Adapters
+        subgraph cluster_db {
+            label="Database Adapters";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            TypeOrmProductRepo [
+                label="TypeOrmProductRepository\n• implements IProductRepository\n• uses ProductMapper"
+                fillcolor="#ce93d8"
+            ];
+            
+            TypeOrmUserRepo [
+                label="TypeOrmUserRepository\n• implements IUserRepository\n• uses UserMapper"
+                fillcolor="#ce93d8"
+            ];
+        }
+        
+        // Mappers
+        subgraph cluster_mappers {
+            label="Mappers";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            ProductMapper [
+                label="ProductMapper\n• toDomain()\n• toEntity()\n• toDomainArray()"
+                fillcolor="#ba68c8"
+            ];
+            
+            UserMapper [
+                label="UserMapper\n• toDomain()\n• toEntity()\n• toDomainArray()"
+                fillcolor="#ba68c8"
+            ];
+        }
+        
+        // Database Entities
+        subgraph cluster_entities_db {
+            label="Database Entities";
+            style=filled;
+            fillcolor="#e1bee7";
+            color="#6a1b9a";
+            
+            ProductEntity [
+                label="ProductEntity\n@Entity('products')\nTypeORM Annotations"
+                fillcolor="#ab47bc"
+            ];
+            
+            UserEntity [
+                label="UserEntity\n@Entity('users')\nTypeORM Annotations"
+                fillcolor="#ab47bc"
+            ];
+        }
+    }
+
+    subgraph cluster_external {
+        label="🗄️ EXTERNAL LAYER\n(Database & External Services)";
+        style=filled;
+        fillcolor="#e8eaf6";
+        color="#3f51b5";
+        fontcolor="#3f51b5";
+        fontsize=14;
+        labeljust="l";
+        
+        PostgreSQL [
+            label="PostgreSQL\nDatabase\n• Products Table\n• Users Table"
+            fillcolor="#c5cae9"
+            shape=cylinder
+        ];
+    }
+
+    // Definir dependencias entre capas (solo hacia adentro)
+    
+    // Presentation -> Application
+    ProductController -> CreateProduct [label="calls" color="#1976d2"];
+    ProductController -> GetAllProducts [label="calls" color="#1976d2"];
+    ProductController -> UpdateProduct [label="calls" color="#1976d2"];
+    ProductController -> ProductResponseDTO [label="uses" color="#1976d2"];
+    
+    UserController -> CreateUser [label="calls" color="#1976d2"];
+    UserController -> ActivateUser [label="calls" color="#1976d2"];
+    UserController -> UserResponseDTO [label="uses" color="#1976d2"];
+
+    // Application -> Domain
+    CreateProduct -> Product [label="creates" color="#388e3c"];
+    CreateProduct -> IProductRepository [label="depends on" color="#388e3c" style=dashed];
+    CreateUser -> User [label="creates" color="#388e3c"];
+    CreateUser -> IUserRepository [label="depends on" color="#388e3c" style=dashed];
+    
+    CreateProductDTO -> Product [label="maps to" color="#388e3c"];
+    CreateUserDTO -> User [label="maps to" color="#388e3c"];
+
+    // Domain internal relationships
+    User -> Email [label="contains" color="#f57c00"];
+    Product -> Money [label="uses" color="#f57c00"];
+    DomainEvents -> EventBus [label="published by" color="#f57c00"];
+
+    // Infrastructure -> Domain (implements)
+    TypeOrmProductRepo -> IProductRepository [label="implements" color="#7b1fa2" style=dashed];
+    TypeOrmUserRepo -> IUserRepository [label="implements" color="#7b1fa2" style=dashed];
+    
+    // Infrastructure internal
+    TypeOrmProductRepo -> ProductMapper [label="uses" color="#7b1fa2"];
+    TypeOrmUserRepo -> UserMapper [label="uses" color="#7b1fa2"];
+    ProductMapper -> Product [label="maps from/to" color="#7b1fa2"];
+    ProductMapper -> ProductEntity [label="maps from/to" color="#7b1fa2"];
+    UserMapper -> User [label="maps from/to" color="#7b1fa2"];
+    UserMapper -> UserEntity [label="maps from/to" color="#7b1fa2"];
+
+    // External
+    TypeOrmProductRepo -> PostgreSQL [label="persists to" color="#3f51b5"];
+    TypeOrmUserRepo -> PostgreSQL [label="persists to" color="#3f51b5"];
+
+    // Título del diagrama
+    labelloc="t";
+    label=<<B>🏛️ Clean Architecture - Layers & Dependencies</B><BR/>
+    <I>NestJS Project Structure</I><BR/>
+    <FONT POINT-SIZE="10">Dependencies flow inward only (Dependency Rule)</FONT>>;
+    fontsize=16;
+}

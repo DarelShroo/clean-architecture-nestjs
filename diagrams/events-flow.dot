@@ -1,0 +1,255 @@
+digraph EventsFlow {
+    rankdir=TB;
+    
+    graph [
+        fontname="Arial, sans-serif"
+        fontsize=12
+        bgcolor="#fafafa"
+        style=filled
+        pad=0.5
+        nodesep=0.8
+        ranksep=1.2
+    ];
+    
+    node [
+        fontname="Arial, sans-serif"
+        fontsize=10
+        style=filled
+        shape=box
+        margin=0.1
+    ];
+    
+    edge [
+        fontname="Arial, sans-serif"
+        fontsize=9
+        color="#666666"
+    ];
+
+    // Domain Events
+    subgraph cluster_events {
+        label="📡 DOMAIN EVENTS";
+        style=filled;
+        fillcolor="#fff3e0";
+        color="#f57c00";
+        fontcolor="#f57c00";
+        fontsize=14;
+        
+        ProductCreated [
+            label="🎉 ProductCreated\n• productId\n• productName\n• price\n• timestamp"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        ProductUpdated [
+            label="📝 ProductUpdated\n• productId\n• changes\n• timestamp"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        StockChanged [
+            label="📦 StockChanged\n• productId\n• oldStock\n• newStock\n• changeType\n• timestamp"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        UserCreated [
+            label="👤 UserCreated\n• userId\n• userName\n• email\n• timestamp"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+        
+        UserActivated [
+            label="✅ UserActivated\n• userId\n• timestamp"
+            fillcolor="#ffb74d"
+            shape=ellipse
+        ];
+    }
+
+    // Event Bus
+    EventBus [
+        label="🚌 EventBus\n(InMemoryEventBus)\n\n• publish(event)\n• subscribe(eventName, handler)\n• handlers: Map<string, Handler[]>\n• async processing"
+        fillcolor="#ff9800"
+        color="#f57c00"
+        fontsize=11
+        shape=doubleoctagon
+    ];
+
+    // Event Handlers
+    subgraph cluster_handlers {
+        label="📬 EVENT HANDLERS\n(Asynchronous Processing)";
+        style=filled;
+        fillcolor="#e8f5e8";
+        color="#388e3c";
+        fontcolor="#388e3c";
+        fontsize=14;
+        
+        NotificationHandler [
+            label="📧 NotificationHandler\n• Send email notifications\n• Push notifications\n• SMS alerts\n• Webhook calls"
+            fillcolor="#a5d6a7"
+        ];
+        
+        AuditHandler [
+            label="📋 AuditHandler\n• Log all domain events\n• Create audit trail\n• Compliance tracking\n• History records"
+            fillcolor="#a5d6a7"
+        ];
+        
+        AnalyticsHandler [
+            label="📊 AnalyticsHandler\n• Update statistics\n• Generate reports\n• Track KPIs\n• Business metrics"
+            fillcolor="#a5d6a7"
+        ];
+        
+        CacheHandler [
+            label="💾 CacheHandler\n• Invalidate cached data\n• Update cache entries\n• Refresh search indices\n• Clear related cache"
+            fillcolor="#a5d6a7"
+        ];
+        
+        IntegrationHandler [
+            label="🔗 IntegrationHandler\n• Sync with external systems\n• ERP integration\n• Third-party APIs\n• Data synchronization"
+            fillcolor="#a5d6a7"
+        ];
+    }
+
+    // Use Cases (Event Publishers)
+    subgraph cluster_publishers {
+        label="🏢 EVENT PUBLISHERS\n(Use Cases)";
+        style=filled;
+        fillcolor="#e3f2fd";
+        color="#1976d2";
+        fontcolor="#1976d2";
+        fontsize=14;
+        
+        CreateProductUseCase [
+            label="⚙️ CreateProduct\nUse Case\npublish(ProductCreated)"
+            fillcolor="#90caf9"
+        ];
+        
+        UpdateProductUseCase [
+            label="⚙️ UpdateProduct\nUse Case\npublish(ProductUpdated)"
+            fillcolor="#90caf9"
+        ];
+        
+        IncreaseStockUseCase [
+            label="⚙️ IncreaseStock\nUse Case\npublish(StockChanged)"
+            fillcolor="#90caf9"
+        ];
+        
+        CreateUserUseCase [
+            label="⚙️ CreateUser\nUse Case\npublish(UserCreated)"
+            fillcolor="#90caf9"
+        ];
+    }
+
+    // External Systems
+    subgraph cluster_external {
+        label="🌐 EXTERNAL SYSTEMS";
+        style=filled;
+        fillcolor="#f3e5f5";
+        color="#7b1fa2";
+        fontcolor="#7b1fa2";
+        fontsize=14;
+        
+        EmailService [
+            label="📬 Email Service\n(SendGrid/AWS SES)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        AuditDatabase [
+            label="📊 Audit Database\n(Event Store)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        Analytics [
+            label="📈 Analytics Platform\n(Google Analytics/Mixpanel)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        Cache [
+            label="💾 Cache System\n(Redis/Memcached)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+        
+        ERPSystem [
+            label="🏭 ERP System\n(SAP/Oracle)"
+            fillcolor="#ce93d8"
+            shape=cylinder
+        ];
+    }
+
+    // Flow: Use Cases -> Events
+    CreateProductUseCase -> ProductCreated [label="emits" color="#2196f3"];
+    UpdateProductUseCase -> ProductUpdated [label="emits" color="#2196f3"];
+    IncreaseStockUseCase -> StockChanged [label="emits" color="#2196f3"];
+    CreateUserUseCase -> UserCreated [label="emits" color="#2196f3"];
+
+    // Flow: Events -> EventBus
+    ProductCreated -> EventBus [label="publish" color="#ff9800"];
+    ProductUpdated -> EventBus [label="publish" color="#ff9800"];
+    StockChanged -> EventBus [label="publish" color="#ff9800"];
+    UserCreated -> EventBus [label="publish" color="#ff9800"];
+    UserActivated -> EventBus [label="publish" color="#ff9800"];
+
+    // Flow: EventBus -> Handlers
+    EventBus -> NotificationHandler [label="async notify" color="#4caf50" style=dashed];
+    EventBus -> AuditHandler [label="async log" color="#4caf50" style=dashed];
+    EventBus -> AnalyticsHandler [label="async track" color="#4caf50" style=dashed];
+    EventBus -> CacheHandler [label="async invalidate" color="#4caf50" style=dashed];
+    EventBus -> IntegrationHandler [label="async sync" color="#4caf50" style=dashed];
+
+    // Flow: Handlers -> External Systems
+    NotificationHandler -> EmailService [label="send emails" color="#9c27b0"];
+    AuditHandler -> AuditDatabase [label="store events" color="#9c27b0"];
+    AnalyticsHandler -> Analytics [label="track metrics" color="#9c27b0"];
+    CacheHandler -> Cache [label="update cache" color="#9c27b0"];
+    IntegrationHandler -> ERPSystem [label="sync data" color="#9c27b0"];
+
+    // Event Subscriptions (registration)
+    subgraph cluster_subscriptions {
+        label="🔔 EVENT SUBSCRIPTIONS\n(Handler Registration)";
+        style=filled;
+        fillcolor="#fff8e1";
+        color="#ffa000";
+        fontcolor="#ffa000";
+        fontsize=12;
+        
+        Subscriptions [
+            label="📋 Event Subscriptions\n\nproduct.created:\n  → NotificationHandler\n  → AuditHandler\n  → AnalyticsHandler\n\nproduct.updated:\n  → AuditHandler\n  → CacheHandler\n\nstock.changed:\n  → NotificationHandler\n  → AnalyticsHandler\n  → IntegrationHandler\n\nuser.created:\n  → NotificationHandler\n  → AuditHandler"
+            fillcolor="#ffecb3"
+            shape=note
+        ];
+    }
+
+    // Event Flow Patterns
+    subgraph cluster_patterns {
+        label="🔄 EVENT PATTERNS";
+        style=filled;
+        fillcolor="#e8eaf6";
+        color="#3f51b5";
+        fontcolor="#3f51b5";
+        fontsize=12;
+        
+        Patterns [
+            label="📐 Common Patterns\n\n🔄 Publish-Subscribe\n• Loose coupling\n• Async processing\n\n⚡ Event Sourcing\n• Complete event history\n• Audit trail\n\n🎯 CQRS Ready\n• Command/Query separation\n• Event-driven updates\n\n🔗 Saga Pattern\n• Distributed transactions\n• Compensation actions"
+            fillcolor="#c5cae9"
+            shape=note
+        ];
+    }
+
+    // Benefits box
+    Benefits [
+        label="✨ BENEFITS\n\n🔒 Decoupling\n• Independent handlers\n• No direct dependencies\n\n⚡ Scalability\n• Async processing\n• Horizontal scaling\n\n🔄 Extensibility\n• Easy to add handlers\n• Plugin architecture\n\n📊 Observability\n• Event tracking\n• System monitoring"
+        fillcolor="#e8f5e8"
+        color="#4caf50"
+        shape=note
+    ];
+
+    // Título
+    labelloc="t";
+    label=<<B>📡 Domain Events & Asynchronous Communication</B><BR/>
+    <I>Event-Driven Architecture with EventBus Pattern</I><BR/>
+    <FONT POINT-SIZE="10">Loose coupling through domain events and async processing</FONT>>;
+    fontsize=16;
+}
