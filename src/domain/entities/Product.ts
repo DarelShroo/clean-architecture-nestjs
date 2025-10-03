@@ -52,7 +52,13 @@ export class Product {
     this.updatedAt = new Date();
   }
 
-  static create(id: string, name: string, description: string, price: number, stock: number): Product {
+  static create(
+    id: string,
+    name: string,
+    description: string,
+    price: number,
+    stock: number,
+  ): Product {
     const now = new Date();
     return new Product(id, name, description, price, stock, now, now);
   }

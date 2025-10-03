@@ -1,5 +1,11 @@
-import { InMemoryEventBus, EventHandler } from '../../../../src/domain/events/EventBus';
-import { DomainEvent, ProductCreated, StockChanged } from '../../../../src/domain/events/DomainEvent';
+import {
+  InMemoryEventBus,
+  EventHandler,
+} from '../../../../src/domain/events/EventBus';
+import {
+  ProductCreated,
+  StockChanged,
+} from '../../../../src/domain/events/DomainEvent';
 
 describe('InMemoryEventBus', () => {
   let eventBus: InMemoryEventBus;
@@ -94,7 +100,7 @@ describe('InMemoryEventBus', () => {
       eventBus.subscribe('product.created', workingHandler);
 
       const event = new ProductCreated('123', 'Test Product', 99.99);
-      
+
       // Should not throw despite handler error
       await expect(eventBus.publish(event)).resolves.not.toThrow();
 
@@ -122,10 +128,10 @@ describe('InMemoryEventBus', () => {
 
     it('should clear all handlers', () => {
       const handler: EventHandler<ProductCreated> = { handle: jest.fn() };
-      
+
       eventBus.subscribe('product.created', handler);
       eventBus.subscribe('product.stock_changed', handler);
-      
+
       expect(eventBus.getHandlerCount('product.created')).toBe(1);
       expect(eventBus.getHandlerCount('product.stock_changed')).toBe(1);
 

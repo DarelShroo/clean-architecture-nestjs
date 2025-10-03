@@ -12,11 +12,15 @@ describe('User Entity', () => {
     });
 
     it('should throw error when name is empty', () => {
-      expect(() => User.create('123', '', 'john@example.com')).toThrow(ValidationError);
+      expect(() => User.create('123', '', 'john@example.com')).toThrow(
+        ValidationError,
+      );
     });
 
     it('should throw error when email is invalid', () => {
-      expect(() => User.create('123', 'John Doe', 'invalid-email')).toThrow(ValidationError);
+      expect(() => User.create('123', 'John Doe', 'invalid-email')).toThrow(
+        ValidationError,
+      );
     });
   });
 

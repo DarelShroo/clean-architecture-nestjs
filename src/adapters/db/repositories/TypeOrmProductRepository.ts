@@ -37,7 +37,10 @@ export class TypeOrmProductRepository implements IProductRepository {
 
   async delete(id: string): Promise<boolean> {
     const result = await this.repository.delete(id);
-    return result.affected !== null && result.affected !== undefined && result.affected > 0;
+    return (
+      result.affected !== null &&
+      result.affected !== undefined &&
+      result.affected > 0
+    );
   }
-
 }

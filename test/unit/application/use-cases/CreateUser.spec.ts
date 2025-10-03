@@ -46,6 +46,8 @@ describe('CreateUser Use Case', () => {
     const existingUser = User.create('id', 'Jane', dto.email);
     mockRepository.findByEmail.mockResolvedValue(existingUser);
 
-    await expect(createUser.execute(dto)).rejects.toThrow(EntityAlreadyExistsError);
+    await expect(createUser.execute(dto)).rejects.toThrow(
+      EntityAlreadyExistsError,
+    );
   });
 });

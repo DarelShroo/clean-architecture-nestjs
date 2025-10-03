@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Put, Patch, Delete, Body, Param, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { CreateProduct } from '../../../application/use-cases/CreateProduct';
 import { GetAllProducts } from '../../../application/use-cases/GetAllProducts';
 import { GetProductById } from '../../../application/use-cases/GetProductById';
@@ -39,7 +51,7 @@ export class ProductController {
   async findAll(): Promise<ProductResponseDTO[]> {
     try {
       const products = await this.getAllProducts.execute();
-      return products.map(p => ProductResponseDTO.fromDomain(p));
+      return products.map((p) => ProductResponseDTO.fromDomain(p));
     } catch (error) {
       this.handleError(error);
     }
@@ -56,7 +68,10 @@ export class ProductController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateProductDTO): Promise<ProductResponseDTO> {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateProductDTO,
+  ): Promise<ProductResponseDTO> {
     try {
       const product = await this.updateProduct.execute(id, dto);
       return ProductResponseDTO.fromDomain(product);
@@ -66,7 +81,10 @@ export class ProductController {
   }
 
   @Patch(':id/increase-stock')
-  async increaseStockEndpoint(@Param('id') id: string, @Body() dto: UpdateStockDTO): Promise<ProductResponseDTO> {
+  async increaseStockEndpoint(
+    @Param('id') id: string,
+    @Body() dto: UpdateStockDTO,
+  ): Promise<ProductResponseDTO> {
     try {
       const product = await this.increaseStock.execute(id, dto);
       return ProductResponseDTO.fromDomain(product);
@@ -76,7 +94,10 @@ export class ProductController {
   }
 
   @Patch(':id/decrease-stock')
-  async decreaseStockEndpoint(@Param('id') id: string, @Body() dto: UpdateStockDTO): Promise<ProductResponseDTO> {
+  async decreaseStockEndpoint(
+    @Param('id') id: string,
+    @Body() dto: UpdateStockDTO,
+  ): Promise<ProductResponseDTO> {
     try {
       const product = await this.decreaseStock.execute(id, dto);
       return ProductResponseDTO.fromDomain(product);
@@ -95,11 +116,13 @@ export class ProductController {
     }
   }
 
-
   private handleError(error: any): never {
     if (error instanceof DomainError) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-    throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+    throw new HttpException(
+      'Internal server error',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 }

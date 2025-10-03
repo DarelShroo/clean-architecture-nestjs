@@ -39,7 +39,7 @@ describe('Money Value Object', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(50, 'USD');
       const result = money1.add(money2);
-      
+
       expect(result.getAmount()).toBe(150);
       expect(result.getCurrency()).toBe('USD');
     });
@@ -47,7 +47,7 @@ describe('Money Value Object', () => {
     it('should throw error when adding money with different currencies', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(50, 'EUR');
-      
+
       expect(() => money1.add(money2)).toThrow(ValidationError);
     });
 
@@ -55,7 +55,7 @@ describe('Money Value Object', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(30, 'USD');
       const result = money1.subtract(money2);
-      
+
       expect(result.getAmount()).toBe(70);
       expect(result.getCurrency()).toBe('USD');
     });
@@ -63,14 +63,14 @@ describe('Money Value Object', () => {
     it('should throw error when subtracting money with different currencies', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(30, 'EUR');
-      
+
       expect(() => money1.subtract(money2)).toThrow(ValidationError);
     });
 
     it('should multiply money by factor', () => {
       const money = new Money(100, 'USD');
       const result = money.multiply(2.5);
-      
+
       expect(result.getAmount()).toBe(250);
       expect(result.getCurrency()).toBe('USD');
     });
@@ -80,28 +80,28 @@ describe('Money Value Object', () => {
     it('should return true for equal money objects', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(100, 'USD');
-      
+
       expect(money1.equals(money2)).toBe(true);
     });
 
     it('should return false for money with different amounts', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(150, 'USD');
-      
+
       expect(money1.equals(money2)).toBe(false);
     });
 
     it('should return false for money with different currencies', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(100, 'EUR');
-      
+
       expect(money1.equals(money2)).toBe(false);
     });
 
     it('should compare money amounts correctly', () => {
       const money1 = new Money(150, 'USD');
       const money2 = new Money(100, 'USD');
-      
+
       expect(money1.isGreaterThan(money2)).toBe(true);
       expect(money2.isGreaterThan(money1)).toBe(false);
     });
@@ -109,7 +109,7 @@ describe('Money Value Object', () => {
     it('should throw error when comparing money with different currencies', () => {
       const money1 = new Money(100, 'USD');
       const money2 = new Money(100, 'EUR');
-      
+
       expect(() => money1.isGreaterThan(money2)).toThrow(ValidationError);
     });
   });

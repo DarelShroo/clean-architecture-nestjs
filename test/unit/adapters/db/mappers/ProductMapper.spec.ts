@@ -28,7 +28,13 @@ describe('ProductMapper', () => {
 
   describe('toEntity', () => {
     it('should convert Product domain entity to ProductEntity', () => {
-      const product = Product.create('123', 'Test Product', 'Test Description', 99.99, 10);
+      const product = Product.create(
+        '123',
+        'Test Product',
+        'Test Description',
+        99.99,
+        10,
+      );
 
       const entity = ProductMapper.toEntity(product);
 
@@ -78,8 +84,20 @@ describe('ProductMapper', () => {
 
   describe('toEntityArray', () => {
     it('should convert array of Product domain entities to array of ProductEntity', () => {
-      const product1 = Product.create('123', 'Product 1', 'Description 1', 99.99, 10);
-      const product2 = Product.create('456', 'Product 2', 'Description 2', 149.99, 5);
+      const product1 = Product.create(
+        '123',
+        'Product 1',
+        'Description 1',
+        99.99,
+        10,
+      );
+      const product2 = Product.create(
+        '456',
+        'Product 2',
+        'Description 2',
+        149.99,
+        5,
+      );
 
       const products = [product1, product2];
       const entities = ProductMapper.toEntityArray(products);

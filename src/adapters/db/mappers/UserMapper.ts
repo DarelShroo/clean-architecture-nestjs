@@ -26,10 +26,10 @@ export class UserMapper {
   }
 
   static toDomainArray(entities: UserEntity[]): User[] {
-    return entities.map(entity => this.toDomain(entity));
+    return entities.map((entity) => this.toDomain(entity));
   }
 
   static toEntityArray(users: User[]): UserEntity[] {
-    return users.map(user => this.toEntity(user));
+    return users.map((user) => this.toEntity(user));
   }
 }
